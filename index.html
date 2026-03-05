@@ -20,10 +20,10 @@
             --silver: #c0c0c0;
             --white: #ffffff;
             --black: #000000;
-            --dark-gray: #1a1a1a; /* خلفية عامة رمادية داكنة */
-            --darker-gray: #0d0d0d; /* للهيدر والفوتر */
-            --text-light: var(--white); /* للمناطق الداكنة */
-            --text-dark: var(--black); /* للمناطق المفتوحة (البانر) */
+            --dark-gray: #1a1a1a;
+            --darker-gray: #0d0d0d;
+            --text-light: var(--white);
+            --text-dark: var(--black);
             --bg-main: var(--dark-gray);
         }
 
@@ -31,13 +31,11 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: var(--bg-main);
             color: var(--text-light);
-            overflow-x: hidden;
+            overflow: hidden; /* ⚠️ منع التمرير العام */
             min-height: 100vh;
-            padding-top: 120px;
-            padding-bottom: 100px;
         }
 
-        /* الهيدر الثابت */
+        /* الهيدر الثابت — لا يتأثر بالتمرير */
         .header {
             background: rgba(13, 13, 13, 0.95);
             padding: 1rem 2rem;
@@ -47,9 +45,9 @@
             z-index: 1000;
             border-bottom: 2px solid var(--primary-blue);
             backdrop-filter: blur(10px);
-            display: flex;            justify-content: flex-end;
-            align-items: center;
-        }
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;        }
 
         .logo-img {
             width: 60px;
@@ -65,7 +63,7 @@
             height: 300px;
             width: 100%;
             position: fixed;
-            top: 80px;
+            top: 80px; /* ارتفاع الهيدر */
             z-index: 999;
             display: flex;
             align-items: center;
@@ -78,8 +76,8 @@
             color: var(--text-dark);
         }
 
-        .banner-content h1 {
-            font-size.8rem;
+        . h1 {
+            font-size: 2.8rem;
             margin-bottom: 0.5rem;
             font-weight: 800;
             letter-spacing: -1px;
@@ -97,8 +95,8 @@
             line-height: 1.6;
             margin-bottom: 1.5rem;
         }
-        .banner-canvas-container {
-            width: 50%;
+
+        .banner-canvas-container {            width: 50%;
             height: 100%;
             display: flex;
             align-items: center;
@@ -116,11 +114,14 @@
             border-radius: 10px;
         }
 
-        /* المحتوى الرئيسي */
+        /* المحتوى الرئيسي — يبدأ بعد البانر ولا يغطي الهيدر/الفوتر */
         .main-content {
-            padding: 350px 2rem 3rem;
+            /* ⚠️ لا نستخدم padding-top هنا، بل نضع margin-top لتفادي التداخل */
+            margin-top: 380px; /* 300px (البانر) + 80px (الهيدر) */
+            margin-bottom: 120px; /* لترك مساحة للفوتر */
             max-width: 1200px;
-            margin: 0 auto;
+            margin-left: auto;
+            margin-right: auto;
             text-align: center;
             color: var(--text-light);
         }
@@ -137,43 +138,14 @@
             z-index: 1000;
         }
 
-        .footer p {
-            color: var(--silver);
-            margin-bottom: 1rem;
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;        }
-
-        .social-links a {
-            color: var(--white);
-            font-size: 1.5rem;
-            transition: all 0.3s;
-            width: 45px;
-            height: 45px;
-            border: 2px solid var(--primary-blue);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .social-links a:hover {
-            background: var(--primary-blue);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 102, 204, 0.5);
-        }
-
+        /* أزرار */
         .btn {
             padding: 1.2rem 3rem;
             text-decoration: none;
             border-radius: 50px;
             font-weight: bold;
             font-size: 1.1rem;
-            transition: all 0.3s ease;
-            display: inline-flex;
+            transition: all 0.3s ease;            display: inline-flex;
             align-items: center;
             gap: 0.8rem;
             position: relative;
@@ -194,7 +166,8 @@
                 flex-direction: column;
                 height: auto;
                 padding: 2rem 1rem;
-                min-height: 550px;            }
+                min-height: 550px;
+            }
 
             .banner-content,
             .banner-canvas-container {
@@ -207,6 +180,11 @@
             #gltfCanvas {
                 min-height: 220px;
             }
+
+            .main-content {
+                margin-top: 600px; /* تعديل للجوال */
+                margin-bottom: 120px;
+            }
         }
     </style>
 </head>
@@ -216,7 +194,6 @@
     <header class="header">
         <img src="logo.png" alt="REIDO Logo" class="logo-img">
     </header>
-
     <!-- البانر -->
     <div class="banner">
         <div class="banner-content">
@@ -233,17 +210,18 @@
         </div>
     </div>
 
-    <!-- المحتوى الرئيسي -->
+    <!-- المحتوى الرئيسي — لا يغطي الهيدر أو الفوتر أبدًا -->
     <section class="main-content">
         <h2>Welcome to Our World of Innovation</h2>
-        <p>This is the main content area. It has a dark gray background, so the text color is white.</p>
+        <p>This section is safely positioned between header/banner and footer.</p>
     </section>
 
     <!-- الفوتر -->
     <footer class="footer">
         <p>&copy; 2024 REIDO - Real Eidolon Software Company. All rights reserved.</p>
         <div class="social-links">
-            <a href="#"><i class="fab fa-facebook-f"></i></a>            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
             <a href="#"><i class="fab fa-instagram"></i></a>
             <a href="#"><i class="fab fa-linkedin-in"></i></a>
         </div>
@@ -256,29 +234,25 @@
             const scene = new THREE.Scene();
             const camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
 
-            // تهيئة الكاميرا
-            camera.position.z = 8; // زيادة قليلاً لاستيعاب الحجم الكبير
-
-            // إضاءة
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+            // ⚡ إضاءة محيطية قوية لضمان وضوح النموذج
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.7); // ↑ زادت من 0.6 إلى 0.7
             scene.add(ambientLight);
 
             const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-            directionalLight.position.set(5, 5, 5).normalize();
+            directionalLight.position.set(5, 10, 7).normalize();
             scene.add(directionalLight);
 
             let model;
-
             const loader = new THREE.GLTFLoader();
             loader.load(
                 'logo.glb',
                 function (gltf) {
                     model = gltf.scene;
 
-                    // ⚠️ التغيير الجوهري: ضاعف الحجم 7 مرات
+                    // 🔍 ضاعف الحجم 7 مرات كما طلبت
                     model.scale.set(7, 7, 7);
 
-                    // تمركز النموذج في المشهد
+                    // 🎯 تمركز النموذج بدقة (لتجنب الانزياح عند التكبير)
                     const box = new THREE.Box3().setFromObject(model);
                     const center = box.getCenter(new THREE.Vector3());
                     model.position.sub(center);
@@ -292,13 +266,14 @@
                     ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
                     ctx.fillRect(0, 0, canvas.width, canvas.height);
                     ctx.fillStyle = 'white';
-                    ctx.font = '20px Arial';                    ctx.textAlign = 'center';
+                    ctx.font = '20px Arial';
+                    ctx.textAlign = 'center';
                     ctx.fillText('3D Model Not Found', canvas.width / 2, canvas.height / 2);
                 }
             );
 
             // ضبط الحجم ديناميكيًا
-            function resizeRenderer() {
+            function resize() {
                 const w = canvas.clientWidth;
                 const h = canvas.clientHeight;
                 if (canvas.width !== w || canvas.height !== h) {
@@ -312,15 +287,14 @@
                 requestAnimationFrame(animate);
 
                 if (model) {
-                    model.rotation.y += 0.008; // سرعة تدوير أبطأ قليلاً لتناسب الحجم الكبير
+                    model.rotation.y += 0.007; // سرعة تدوير معتدلة لحجم كبير
                 }
 
-                resizeRenderer();
+                resize();
                 renderer.render(scene, camera);
             }
-
-            // استدعاء أولي لضبط الحجم
-            resizeRenderer();
+            // تنفيذ أولي
+            resize();
             animate();
         });
     </script>
