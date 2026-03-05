@@ -35,8 +35,8 @@
             color: var(--text-light);
             overflow-x: hidden;
             min-height: 100vh;
-            padding-top: 100px; /* تم التعديل */
-            padding-bottom: 120px; /* تم التعديل */
+            padding-top: 80px; /* مسافة للهيدر فقط */
+            padding-bottom: 120px;
         }
 
         /* الهيدر الثابت - فضي معدني */
@@ -46,14 +46,14 @@
             position: fixed;
             width: 100%;
             top: 0;
-            left: 0; /* تم الإضافة */
-            z-index: 1001; /* تم الزيادة */            border-bottom: 2px solid #808080;
+            left: 0;
+            z-index: 1001;            border-bottom: 2px solid #808080;
             backdrop-filter: blur(10px);
             display: flex;
             justify-content: flex-end;
             align-items: center;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-            height: 80px; /* تم الإضافة */
+            height: 80px;
         }
 
         .logo-img {
@@ -64,24 +64,26 @@
             border: 2px solid #808080;
         }
 
-        /* البانر المتدرج */
+        /* البانر المتدرج - تم الإصلاح */
         .banner {
             background: linear-gradient(135deg, var(--primary-blue), var(--bright-blue), var(--silver));
-            min-height: 350px; /* تم التعديل */
+            height: 400px; /* height محدد بدلاً من min-height */
             width: 100%;
-            position: relative; /* تم التعديل من fixed إلى relative */
-            top: 0; /* تم التعديل */
+            position: relative; /* مهم للـ canvas */
+            top: 0;
             z-index: 999;
             display: flex;
             align-items: center;
+            justify-content: space-between; /* توزيع العناصر */
             padding: 2rem;
-            margin-top: 0; /* تم الإضافة */
+            overflow: hidden; /* لمنع الخروج عن الحدود */
         }
 
         .banner-content {
-            width: 50%;
+            width: 45%; /* تقليل قليلاً */
             padding-right: 2rem;
             color: var(--text-dark);
+            z-index: 10; /* فوق الخلفية */
         }
 
         .banner-content h1 {
@@ -94,9 +96,9 @@
         .banner-content h2 {
             font-size: 1.4rem;
             margin-bottom: 1rem;
-            letter-spacing: 2px;
-            font-weight: 500;
+            letter-spacing: 2px;            font-weight: 500;
         }
+
         .banner-content p {
             font-size: 1.2rem;
             line-height: 1.6;
@@ -104,12 +106,13 @@
         }
 
         .banner-canvas-container {
-            width: 50%;
-            height: 300px; /* تم التعديل */
+            width: 50%; /* زيادة المساحة للكانفاس */
+            height: 350px; /* ارتفاع محدد */
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
+            z-index: 10;
         }
 
         #gltfCanvas {
@@ -122,7 +125,7 @@
 
         /* المحتوى الرئيسي */
         .main-content {
-            padding: 4rem 2rem 5rem; /* تم التعديل */
+            padding: 4rem 2rem 5rem;
             max-width: 1200px;
             margin: 0 auto;
             text-align: center;
@@ -137,15 +140,15 @@
             border-top: 2px solid #808080;
             position: fixed;
             bottom: 0;
-            left: 0; /* تم الإضافة */
+            left: 0;
             width: 100%;
-            z-index: 1001; /* تم الزيادة */
+            z-index: 1001;
             box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
         }
-
         .footer p {
             color: #1a1a1a;
-            margin-bottom: 1rem;            font-weight: 600;
+            margin-bottom: 1rem;
+            font-weight: 600;
         }
 
         .social-links {
@@ -192,15 +195,16 @@
             color: var(--black);
             box-shadow: 0 10px 30px rgba(192, 192, 192, 0.4);
         }
-
         .btn:hover {
-            transform: translateY(-5px);            box-shadow: 0 15px 40px rgba(192, 192, 192, 0.6);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(192, 192, 192, 0.6);
         }
 
         @media (max-width: 768px) {
             .banner {
                 flex-direction: column;
-                min-height: auto;
+                height: auto;
+                min-height: 600px;
                 padding: 2rem 1rem;
             }
 
@@ -213,7 +217,8 @@
             }
 
             .banner-canvas-container {
-                height: 250px;
+                height: 300px;
+                margin-top: 2rem;
             }
 
             body {
@@ -238,12 +243,12 @@
             <p>We turn creative ideas into tangible digital reality.<br>Professional experience in design and development.</p>
             <a href="portfolio.php" class="btn">
                 <i class="fas fa-images"></i>
-                View Portfolio
-            </a>
+                View Portfolio            </a>
         </div>
         <div class="banner-canvas-container">
             <canvas id="gltfCanvas"></canvas>
-        </div>    </div>
+        </div>
+    </div>
 
     <!-- المحتوى الرئيسي -->
     <section class="main-content">
@@ -265,6 +270,8 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const canvas = document.getElementById('gltfCanvas');
+            const container = document.querySelector('.banner-canvas-container');
+            
             const renderer = new THREE.WebGLRenderer({ 
                 canvas, 
                 alpha: true, 
@@ -276,63 +283,64 @@
             renderer.shadowMap.type = THREE.PCFSoftShadowMap;
             
             const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
+            
+            // حساب النسبة بشكل صحيح
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+            const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
 
             // تهيئة الكاميرا
             camera.position.z = 8;
 
-            // ========== إضاءة قوية ومحسّنة ==========
-            
+            // ========== إضاءة قوية ومحسّنة ==========            
             // 1. إضاءة محيطة قوية جداً
-            const ambientLight = new THREE.AmbientLight(0xffffff, 2.0); // زيادة كبيرة من 1.2 إلى 2.0
+            const ambientLight = new THREE.AmbientLight(0xffffff, 2.0);
             scene.add(ambientLight);
 
             // 2. إضاءة اتجاهية رئيسية قوية
-            const directionalLight = new THREE.DirectionalLight(0xffffff, 2.5); // زيادة من 1.5 إلى 2.5
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 2.5);
             directionalLight.position.set(5, 5, 10);
             directionalLight.castShadow = true;
             directionalLight.shadow.mapSize.width = 1024;
-            directionalLight.shadow.mapSize.height = 1024;            scene.add(directionalLight);
+            directionalLight.shadow.mapSize.height = 1024;
+            scene.add(directionalLight);
 
             // 3. إضاءة اتجاهية ثانية من اليسار
-            const directionalLight2 = new THREE.DirectionalLight(0xffffff, 1.8); // زيادة من 0.8 إلى 1.8
+            const directionalLight2 = new THREE.DirectionalLight(0xffffff, 1.8);
             directionalLight2.position.set(-5, 3, 8);
             scene.add(directionalLight2);
 
             // 4. إضاءة اتجاهية ثالثة من الخلف للإبراز
-            const directionalLight3 = new THREE.DirectionalLight(0x88ccff, 1.5); // إضاءة زرقاء فاتحة للخلفية
+            const directionalLight3 = new THREE.DirectionalLight(0x88ccff, 1.5);
             directionalLight3.position.set(0, -5, -10);
             scene.add(directionalLight3);
 
             // 5. إضاءة نقطية علوية قوية
-            const pointLight1 = new THREE.PointLight(0xffffff, 1.5, 50); // زيادة من 0.6 إلى 1.5
+            const pointLight1 = new THREE.PointLight(0xffffff, 1.5, 50);
             pointLight1.position.set(0, 10, 0);
             scene.add(pointLight1);
 
             // 6. إضاءة نقطية من اليمين
-            const pointLight2 = new THREE.PointLight(0xffffff, 1.0, 50); // إضافة جديدة
+            const pointLight2 = new THREE.PointLight(0xffffff, 1.0, 50);
             pointLight2.position.set(10, 0, 5);
             scene.add(pointLight2);
 
             // 7. إضاءة نقطية من اليسار
-            const pointLight3 = new THREE.PointLight(0xffffff, 1.0, 50); // إضافة جديدة
+            const pointLight3 = new THREE.PointLight(0xffffff, 1.0, 50);
             pointLight3.position.set(-10, 0, 5);
             scene.add(pointLight3);
 
             // 8. إضاءة خلفية قوية (Rim Light)
-            const spotLight = new THREE.SpotLight(0xffffff, 2.0); // إضافة جديدة
+            const spotLight = new THREE.SpotLight(0xffffff, 2.0);
             spotLight.position.set(0, 10, -10);
             spotLight.angle = Math.PI / 6;
             spotLight.penumbra = 1;
             scene.add(spotLight);
 
             // 9. إضاءة Hemisphere لمحاكاة السماء والأرض
-            const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 1.5); // إضافة جديدة
+            const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 1.5);
             hemiLight.position.set(0, 20, 0);
             scene.add(hemiLight);
-
-            // ========== نهاية الإعدادات الإضاءة ==========
-
             let model;
 
             const loader = new THREE.GLTFLoader();
@@ -341,7 +349,8 @@
                 function (gltf) {
                     model = gltf.scene;
 
-                    // تمكين الظلال للنموذج                    model.traverse((child) => {
+                    // تمكين الظلال للنموذج
+                    model.traverse((child) => {
                         if (child.isMesh) {
                             child.castShadow = true;
                             child.receiveShadow = true;
@@ -349,7 +358,7 @@
                             // تحسين المواد
                             if (child.material) {
                                 child.material.needsUpdate = true;
-                                child.material.emissiveIntensity = 0.3; // إضافة توهج خفيف
+                                child.material.emissiveIntensity = 0.3;
                             }
                         }
                     });
@@ -379,10 +388,9 @@
 
             // ضبط الحجم ديناميكيًا
             function resizeRenderer() {
-                const w = canvas.clientWidth;
-                const h = canvas.clientHeight;
-                if (canvas.width !== w || canvas.height !== h) {
-                    renderer.setSize(w, h, false);
+                const w = container.clientWidth;
+                const h = container.clientHeight;
+                if (canvas.width !== w || canvas.height !== h) {                    renderer.setSize(w, h, false);
                     camera.aspect = w / h;
                     camera.updateProjectionMatrix();
                 }
@@ -390,6 +398,7 @@
 
             function animate() {
                 requestAnimationFrame(animate);
+
                 if (model) {
                     model.rotation.y += 0.008;
                 }
