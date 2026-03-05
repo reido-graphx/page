@@ -1,233 +1,284 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>REIDO</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/three0.144.0/build/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.144.0/examples/js/loaders/GLTFLoader.min.js"></script>
+    <title>REIDO - Real Eidolon Software Company</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/three@0.144.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.144.0/examples/js/loaders/GLTFLoader.js"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         :root {
-            --primary: #0066cc;
-            --bright: #00a8ff;
+            --primary-blue: #0066cc;
+            --bright-blue: #00a8ff;
             --silver: #c0c0c0;
-            --dark: #1a1a1a;
-            --darker: #0d0d0d;
-            --text-light: #fff;
-            --text-dark: #000;
+            --white: #ffffff;
+            --black: #000000;
+            --dark-gray: #1a1a1a; /* خلفية عامة رمادية داكنة */
+            --darker-gray: #0d0d0d; /* للهيدر والفوتر */
+            --text-light: var(--white); /* للمناطق الداكنة */
+            --text-dark: var(--black); /* للمناطق المفتوحة (البانر) */
+            --bg-main: var(--dark-gray);
         }
 
         body {
-            font-family: 'Segoe UI', sans-serif;
-            background: var(--dark);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-main);
             color: var(--text-light);
-            overflow: hidden;
-            height: 100vh;
-            position: relative;
+            overflow-x: hidden;
+            min-height: 100vh;
+            padding-top: 120px;
+            padding-bottom: 100px;
         }
 
-        /* --- الهيدر ثابت --- */
+        /* الهيدر الثابت */
         .header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            height: 80px;
             background: rgba(13, 13, 13, 0.95);
-            display: flex;
-            justify-content: flex-end;
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 2px solid var(--primary-blue);
+            backdrop-filter: blur(10px);
+            display: flex;            justify-content: flex-end;
             align-items: center;
-            padding: 0 2rem;
-            border-bottom: 2px solid var(--primary);
-            z-index: 100;
         }
-        .header img {
+
+        .logo-img {
             width: 60px;
             height: 60px;
-            border: 2px solid var(--primary);
-            border-radius: 4px;        }
-
-        /* --- البانر --- */
-        .banner {
-            position: fixed;
-            top: 80px;
-            width: 100%;
-            height: 300px;
-            background: linear-gradient(135deg, var(--primary), var(--bright), var(--silver));
-            display: flex;
-            z-index: 90;
+            border-radius: 5px;
+            object-fit: contain;
+            border: 2px solid var(--primary-blue);
         }
 
-        .banner-left {
-            width: 50%;
+        /* البانر المتدرج */
+        .banner {
+            background: linear-gradient(135deg, var(--primary-blue), var(--bright-blue), var(--silver));
+            height: 300px;
+            width: 100%;
+            position: fixed;
+            top: 80px;
+            z-index: 999;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
+            align-items: center;
             padding: 0 2rem;
+        }
+
+        .banner-content {
+            width: 50%;
+            padding-right: 2rem;
             color: var(--text-dark);
         }
 
-        .banner-left h1 {
-            font-size: 2.8rem;
+        .banner-content h1 {
+            font-size.8rem;
+            margin-bottom: 0.5rem;
             font-weight: 800;
             letter-spacing: -1px;
         }
-        .banner-left h2 {
+
+        .banner-content h2 {
             font-size: 1.4rem;
+            margin-bottom: 1rem;
             letter-spacing: 2px;
-            margin: 0.5rem 0;
+            font-weight: 500;
         }
-        .banner-left p {
+
+        .banner-content p {
             font-size: 1.2rem;
             line-height: 1.6;
-            margin: 1rem 0;
+            margin-bottom: 1.5rem;
         }
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.8rem;
-            padding: 1.1rem 2.5rem;
-            background: linear-gradient(to right, #c0c0c0, #fff);
-            color: #000;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            margin-top: 1rem;
-            box-shadow: 0 6px 20px rgba(192, 192, 192, 0.4);
-        }
-        .banner-right {
+        .banner-canvas-container {
             width: 50%;
+            height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
         }
-        #canvas-container {
-            width: 100%;
-            height: 100%;
-            min-height: 250px;
-        }
+
         #gltfCanvas {
             width: 100%;
             height: 100%;
+            min-height: 250px;
+            max-height: 280px;
             display: block;
             background: transparent;
-            border-radius: 8px;
+            border-radius: 10px;
         }
 
-        /* --- المحتوى الرئيسي — يبدأ بعد البانر فقط --- */
-        .main {
-            margin-top: 380px; /* 80 + 300 */
-            padding: 4rem 2rem;
+        /* المحتوى الرئيسي */
+        .main-content {
+            padding: 350px 2rem 3rem;
             max-width: 1200px;
-            margin-left: auto;
-            margin-right: auto;
+            margin: 0 auto;
             text-align: center;
             color: var(--text-light);
         }
 
-        /* --- الفوتر --- */
+        /* الفوتر الثابت */
         .footer {
+            background: var(--darker-gray);
+            padding: 2rem;
+            text-align: center;
+            border-top: 2px solid var(--primary-blue);
             position: fixed;
             bottom: 0;
             width: 100%;
-            height: 100px;
-            background: var(--darker);
+            z-index: 1000;
+        }
+
+        .footer p {
+            color: var(--silver);
+            margin-bottom: 1rem;
+        }
+
+        .social-links {
             display: flex;
-            flex-direction: column;
             justify-content: center;
-            align-items: center;
-            border-top: 2px solid var(--primary);
-            z-index: 100;
-        }
-        .footer p { color: var(--silver); }
-        .social {
-            display: flex;
-            gap: 1.2rem;            margin-top: 1rem;
-        }
-        .social a {
-            color: white;
-            font-size: 1.4rem;
-            width: 42px;
-            height: 42px;
-            border: 2px solid var(--primary);
+            gap: 1.5rem;        }
+
+        .social-links a {
+            color: var(--white);
+            font-size: 1.5rem;
+            transition: all 0.3s;
+            width: 45px;
+            height: 45px;
+            border: 2px solid var(--primary-blue);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s;
         }
-        .social a:hover {
-            background: var(--primary);
-            transform: translateY(-3px);
+
+        .social-links a:hover {
+            background: var(--primary-blue);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 102, 204, 0.5);
+        }
+
+        .btn {
+            padding: 1.2rem 3rem;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+            background: linear-gradient(135deg, var(--silver), var(--white));
+            color: var(--black);
+            box-shadow: 0 10px 30px rgba(192, 192, 192, 0.4);
+        }
+
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(192, 192, 192, 0.6);
+        }
+
+        @media (max-width: 768px) {
+            .banner {
+                flex-direction: column;
+                height: auto;
+                padding: 2rem 1rem;
+                min-height: 550px;            }
+
+            .banner-content,
+            .banner-canvas-container {
+                width: 100%;
+                padding-right: 0;
+                margin-bottom: 2rem;
+                text-align: center;
+            }
+
+            #gltfCanvas {
+                min-height: 220px;
+            }
         }
     </style>
 </head>
 <body>
 
+    <!-- الهيدر -->
     <header class="header">
-        <img src="logo.png" alt="REIDO">
+        <img src="logo.png" alt="REIDO Logo" class="logo-img">
     </header>
 
+    <!-- البانر -->
     <div class="banner">
-        <div class="banner-left">
+        <div class="banner-content">
             <h1>REIDO</h1>
             <h2>REAL EIDOLON SOFTWARE COMPANY</h2>
             <p>We turn creative ideas into tangible digital reality.<br>Professional experience in design and development.</p>
-            <a href="#" class="btn">
-                <i class="fas fa-images"></i> View Portfolio
+            <a href="portfolio.php" class="btn">
+                <i class="fas fa-images"></i>
+                View Portfolio
             </a>
         </div>
-        <div class="banner-right">
-            <div id="canvas-container">
-                <canvas id="gltfCanvas"></canvas>
-            </div>
+        <div class="banner-canvas-container">
+            <canvas id="gltfCanvas"></canvas>
         </div>
     </div>
 
-    <main class="main">
-        <h2>Your Innovation, Our Code</h2>
-        <p>This area is safely below the banner and above the footer.</p>
-    </main>
+    <!-- المحتوى الرئيسي -->
+    <section class="main-content">
+        <h2>Welcome to Our World of Innovation</h2>
+        <p>This is the main content area. It has a dark gray background, so the text color is white.</p>
+    </section>
 
+    <!-- الفوتر -->
     <footer class="footer">
-        <p>&copy; 2026 REIDO. All rights reserved.</p>
-        <div class="social">            <a href="#"><i class="fab fa-facebook-f"></i></a>
-            <a href="#"><i class="fab fa-twitter"></i></a>
+        <p>&copy; 2024 REIDO - Real Eidolon Software Company. All rights reserved.</p>
+        <div class="social-links">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>            <a href="#"><i class="fab fa-twitter"></i></a>
             <a href="#"><i class="fab fa-instagram"></i></a>
             <a href="#"><i class="fab fa-linkedin-in"></i></a>
         </div>
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', function () {
             const canvas = document.getElementById('gltfCanvas');
             const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
             const scene = new THREE.Scene();
             const camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
 
-            // إضاءة قوية جدًا لضمان ظهور النموذج حتى لو كان داكنًا
-            const ambient = new THREE.AmbientLight(0xffffff, 0.8); // ⬆️ 0.8 = إضاءة محيطية قوية
-            scene.add(ambient);
+            // تهيئة الكاميرا
+            camera.position.z = 8; // زيادة قليلاً لاستيعاب الحجم الكبير
 
-            const dir = new THREE.DirectionalLight(0xffffff, 1);
-            dir.position.set(10, 10, 10);
-            scene.add(dir);
+            // إضاءة
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+            scene.add(ambientLight);
 
-            camera.position.z = 10;
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(5, 5, 5).normalize();
+            scene.add(directionalLight);
 
             let model;
-            const loader = new THREE.GLTFLoader();
 
+            const loader = new THREE.GLTFLoader();
             loader.load(
                 'logo.glb',
-                (gltf) => {
+                function (gltf) {
                     model = gltf.scene;
-                    model.scale.set(7, 7, 7); // ✅ 7x
 
-                    // تمركز تلقائي
+                    // ⚠️ التغيير الجوهري: ضاعف الحجم 7 مرات
+                    model.scale.set(7, 7, 7);
+
+                    // تمركز النموذج في المشهد
                     const box = new THREE.Box3().setFromObject(model);
                     const center = box.getCenter(new THREE.Vector3());
                     model.position.sub(center);
@@ -235,22 +286,22 @@
                     scene.add(model);
                 },
                 undefined,
-                (err) => {
-                    console.error("❌ GLB Load Failed:", err);
-                    // رسم رسالة بديلة في الكانفاس إن فشل التحميل
+                function (error) {
+                    console.error('Error loading GLB:', error);
                     const ctx = canvas.getContext('2d');
-                    ctx.fillStyle = 'rgba(0,0,0,0.3)';
+                    ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
                     ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    ctx.fillStyle = '#fff';
-                    ctx.font = 'bold 20px Arial';
-                    ctx.textAlign = 'center';                    ctx.fillText('3D MODEL LOADING...', canvas.width/2, canvas.height/2);
+                    ctx.fillStyle = 'white';
+                    ctx.font = '20px Arial';                    ctx.textAlign = 'center';
+                    ctx.fillText('3D Model Not Found', canvas.width / 2, canvas.height / 2);
                 }
             );
 
-            function resize() {
+            // ضبط الحجم ديناميكيًا
+            function resizeRenderer() {
                 const w = canvas.clientWidth;
                 const h = canvas.clientHeight;
-                if (w !== canvas.width || h !== canvas.height) {
+                if (canvas.width !== w || canvas.height !== h) {
                     renderer.setSize(w, h, false);
                     camera.aspect = w / h;
                     camera.updateProjectionMatrix();
@@ -259,14 +310,20 @@
 
             function animate() {
                 requestAnimationFrame(animate);
-                if (model) model.rotation.y += 0.006;
-                resize();
+
+                if (model) {
+                    model.rotation.y += 0.008; // سرعة تدوير أبطأ قليلاً لتناسب الحجم الكبير
+                }
+
+                resizeRenderer();
                 renderer.render(scene, camera);
             }
 
-            resize();
+            // استدعاء أولي لضبط الحجم
+            resizeRenderer();
             animate();
         });
     </script>
+
 </body>
 </html>
