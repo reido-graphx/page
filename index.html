@@ -18,12 +18,14 @@
             --primary-blue: #0066cc;
             --bright-blue: #00a8ff;
             --silver: #c0c0c0;
+            --metallic-silver: #e8e8e8;
+            --dark-silver: #a8a8a8;
             --white: #ffffff;
             --black: #000000;
-            --dark-gray: #1a1a1a; /* خلفية عامة رمادية داكنة */
-            --darker-gray: #0d0d0d; /* للهيدر والفوتر */
-            --text-light: var(--white); /* للمناطق الداكنة */
-            --text-dark: var(--black); /* للمناطق المفتوحة (البانر) */
+            --dark-gray: #1a1a1a;
+            --darker-gray: #0d0d0d;
+            --text-light: var(--white);
+            --text-dark: var(--black);
             --bg-main: var(--dark-gray);
         }
 
@@ -33,22 +35,23 @@
             color: var(--text-light);
             overflow-x: hidden;
             min-height: 100vh;
-            padding-top: 120px;
-            padding-bottom: 100px;
+            padding-top: 150px;
+            padding-bottom: 150px;
         }
 
-        /* الهيدر الثابت */
+        /* الهيدر الثابت - فضي معدني */
         .header {
-            background: rgba(13, 13, 13, 0.95);
+            background: linear-gradient(135deg, #e8e8e8 0%, #c0c0c0 50%, #a8a8a8 100%);
             padding: 1rem 2rem;
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 1000;
-            border-bottom: 2px solid var(--primary-blue);
-            backdrop-filter: blur(10px);
-            display: flex;            justify-content: flex-end;
+            border-bottom: 2px solid #808080;            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: flex-end;
             align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
 
         .logo-img {
@@ -56,7 +59,7 @@
             height: 60px;
             border-radius: 5px;
             object-fit: contain;
-            border: 2px solid var(--primary-blue);
+            border: 2px solid #808080;
         }
 
         /* البانر المتدرج */
@@ -79,7 +82,7 @@
         }
 
         .banner-content h1 {
-            font-size.8rem;
+            font-size: 2.8rem;
             margin-bottom: 0.5rem;
             font-weight: 800;
             letter-spacing: -1px;
@@ -93,10 +96,10 @@
         }
 
         .banner-content p {
-            font-size: 1.2rem;
-            line-height: 1.6;
+            font-size: 1.2rem;            line-height: 1.6;
             margin-bottom: 1.5rem;
         }
+
         .banner-canvas-container {
             width: 50%;
             height: 100%;
@@ -118,50 +121,54 @@
 
         /* المحتوى الرئيسي */
         .main-content {
-            padding: 350px 2rem 3rem;
+            padding: 380px 2rem 5rem;
             max-width: 1200px;
             margin: 0 auto;
             text-align: center;
             color: var(--text-light);
         }
 
-        /* الفوتر الثابت */
+        /* الفوتر الثابت - فضي معدني */
         .footer {
-            background: var(--darker-gray);
+            background: linear-gradient(135deg, #b8b8b8 0%, #c0c0c0 50%, #d0d0d0 100%);
             padding: 2rem;
             text-align: center;
-            border-top: 2px solid var(--primary-blue);
+            border-top: 2px solid #808080;
             position: fixed;
             bottom: 0;
             width: 100%;
             z-index: 1000;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
         }
 
         .footer p {
-            color: var(--silver);
+            color: #1a1a1a;
             margin-bottom: 1rem;
+            font-weight: 600;
         }
-
         .social-links {
             display: flex;
             justify-content: center;
-            gap: 1.5rem;        }
+            gap: 1.5rem;
+        }
 
         .social-links a {
-            color: var(--white);
+            color: #1a1a1a;
             font-size: 1.5rem;
             transition: all 0.3s;
             width: 45px;
             height: 45px;
-            border: 2px solid var(--primary-blue);
+            border: 2px solid #1a1a1a;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            background: rgba(255, 255, 255, 0.3);
         }
 
         .social-links a:hover {
             background: var(--primary-blue);
+            color: white;
             transform: translateY(-5px);
             box-shadow: 0 10px 25px rgba(0, 102, 204, 0.5);
         }
@@ -188,13 +195,13 @@
             transform: translateY(-5px);
             box-shadow: 0 15px 40px rgba(192, 192, 192, 0.6);
         }
-
         @media (max-width: 768px) {
             .banner {
                 flex-direction: column;
                 height: auto;
                 padding: 2rem 1rem;
-                min-height: 550px;            }
+                min-height: 550px;
+            }
 
             .banner-content,
             .banner-canvas-container {
@@ -236,14 +243,14 @@
     <!-- المحتوى الرئيسي -->
     <section class="main-content">
         <h2>Welcome to Our World of Innovation</h2>
-        <p>This is the main content area. It has a dark gray background, so the text color is white.</p>
-    </section>
+        <p>This is the main content area. It has a dark gray background, so the text color is white.</p>    </section>
 
     <!-- الفوتر -->
     <footer class="footer">
         <p>&copy; 2024 REIDO - Real Eidolon Software Company. All rights reserved.</p>
         <div class="social-links">
-            <a href="#"><i class="fab fa-facebook-f"></i></a>            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
             <a href="#"><i class="fab fa-instagram"></i></a>
             <a href="#"><i class="fab fa-linkedin-in"></i></a>
         </div>
@@ -253,19 +260,30 @@
         document.addEventListener('DOMContentLoaded', function () {
             const canvas = document.getElementById('gltfCanvas');
             const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+            renderer.setPixelRatio(window.devicePixelRatio);
             const scene = new THREE.Scene();
             const camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
 
             // تهيئة الكاميرا
-            camera.position.z = 8; // زيادة قليلاً لاستيعاب الحجم الكبير
+            camera.position.z = 8;
 
-            // إضاءة
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+            // إضاءة محسّنة ومكثفة
+            const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
             scene.add(ambientLight);
 
-            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
             directionalLight.position.set(5, 5, 5).normalize();
             scene.add(directionalLight);
+
+            // إضاءة إضافية من الجهة المقابلة
+            const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight2.position.set(-5, 3, 5).normalize();
+            scene.add(directionalLight2);
+
+            // إضاءة نقطية لمزيد من اللمعان
+            const pointLight = new THREE.PointLight(0xffffff, 0.6, 50);
+            pointLight.position.set(0, 5, 0);
+            scene.add(pointLight);
 
             let model;
 
@@ -274,8 +292,7 @@
                 'logo.glb',
                 function (gltf) {
                     model = gltf.scene;
-
-                    // ⚠️ التغيير الجوهري: ضاعف الحجم 7 مرات
+                    // ضاعف الحجم 7 مرات
                     model.scale.set(7, 7, 7);
 
                     // تمركز النموذج في المشهد
@@ -292,7 +309,8 @@
                     ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
                     ctx.fillRect(0, 0, canvas.width, canvas.height);
                     ctx.fillStyle = 'white';
-                    ctx.font = '20px Arial';                    ctx.textAlign = 'center';
+                    ctx.font = '20px Arial';
+                    ctx.textAlign = 'center';
                     ctx.fillText('3D Model Not Found', canvas.width / 2, canvas.height / 2);
                 }
             );
@@ -312,7 +330,7 @@
                 requestAnimationFrame(animate);
 
                 if (model) {
-                    model.rotation.y += 0.008; // سرعة تدوير أبطأ قليلاً لتناسب الحجم الكبير
+                    model.rotation.y += 0.008;
                 }
 
                 resizeRenderer();
@@ -324,6 +342,5 @@
             animate();
         });
     </script>
-
 </body>
 </html>
