@@ -20,22 +20,26 @@
             --silver: #c0c0c0;
             --white: #ffffff;
             --black: #000000;
-            --dark-gray: #1a1a1a;
+            --dark-gray: #1a1a1a; /* خلفية عامة رمادية داكنة */
+            --darker-gray: #0d0d0d; /* للهيدر والفوتر */
+            --text-light: var(--white); /* للمناطق الداكنة */
+            --text-dark: var(--black); /* للمناطق المفتوحة (البانر) */
+            --bg-main: var(--dark-gray);
         }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: var(--black);
-            color: var(--white);
+            background: var(--bg-main);
+            color: var(--text-light);
             overflow-x: hidden;
             min-height: 100vh;
-            padding-top: 120px; /* ل accommodation الهيدر والبانر */
-            padding-bottom: 100px; /* ل accommodation الفوتر */
+            padding-top: 120px;
+            padding-bottom: 100px;
         }
 
         /* الهيدر الثابت */
         .header {
-            background: rgba(0, 0, 0, 0.95);
+            background: rgba(13, 13, 13, 0.95);
             padding: 1rem 2rem;
             position: fixed;
             width: 100%;
@@ -43,25 +47,25 @@
             z-index: 1000;
             border-bottom: 2px solid var(--primary-blue);
             backdrop-filter: blur(10px);
-            display: flex;
-            justify-content: flex-end; /* لوضع الشعار في الطرف الأيمن */
+            display: flex;            justify-content: flex-end;
             align-items: center;
         }
+
         .logo-img {
-            width: 60px; /* حسب الحجم المطلوب */
+            width: 60px;
             height: 60px;
             border-radius: 5px;
-            object-fit: cover;
+            object-fit: contain;
             border: 2px solid var(--primary-blue);
         }
 
         /* البانر المتدرج */
         .banner {
             background: linear-gradient(135deg, var(--primary-blue), var(--bright-blue), var(--silver));
-            height: 300px; /* ارتفاع البانر */
+            height: 300px;
             width: 100%;
-            position: fixed; /* مثبت تحت الهيدر */
-            top: 80px; /* ارتفاع الهيدر */
+            position: fixed;
+            top: 80px;
             z-index: 999;
             display: flex;
             align-items: center;
@@ -71,91 +75,62 @@
         .banner-content {
             width: 50%;
             padding-right: 2rem;
+            color: var(--text-dark);
         }
 
         .banner-content h1 {
-            font-size: 2.5rem;
+            font-size.8rem;
+            margin-bottom: 0.5rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .banner-content h2 {
+            font-size: 1.4rem;
             margin-bottom: 1rem;
-            color: var(--black);
+            letter-spacing: 2px;
+            font-weight: 500;
         }
 
         .banner-content p {
             font-size: 1.2rem;
+            line-height: 1.6;
             margin-bottom: 1.5rem;
-            color: var(--dark-gray);
         }
-
         .banner-canvas-container {
             width: 50%;
             height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
         }
 
         #gltfCanvas {
             width: 100%;
             height: 100%;
-            display: block;        }
+            min-height: 250px;
+            max-height: 280px;
+            display: block;
+            background: transparent;
+            border-radius: 10px;
+        }
 
-        /* المحتوى الرئيسي (فارغ الآن) */
+        /* المحتوى الرئيسي */
         .main-content {
-            padding: 350px 2rem 3rem; /* 300px ارتفاع البانر + 50px */
+            padding: 350px 2rem 3rem;
             max-width: 1200px;
             margin: 0 auto;
             text-align: center;
-        }
-
-        .main-content h2 {
-            color: var(--silver);
-            margin-bottom: 2rem;
-        }
-
-        /* قسم نبذة سريعة */
-        .quick-info {
-            background: var(--dark-gray);
-            padding: 4rem 2rem;
-            border-top: 1px solid #333;
-            border-bottom: 1px solid #333;
-        }
-
-        .info-grid {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 3rem;
-            text-align: center;
-        }
-
-        .info-card {
-            padding: 2rem;
-        }
-
-        .info-card i {
-            font-size: 3rem;
-            background: linear-gradient(135deg, var(--primary-blue), var(--bright-blue));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 1rem;
-        }
-
-        .info-card h3 {
-            color: var(--silver);
-            margin-bottom: 1rem;
-            font-size: 1.3rem;
-        }
-        .info-card p {
-            color: #777;
-            line-height: 1.6;
+            color: var(--text-light);
         }
 
         /* الفوتر الثابت */
         .footer {
-            background: var(--black);
+            background: var(--darker-gray);
             padding: 2rem;
             text-align: center;
-            border-top: 2px solid var(--primary-blue;
+            border-top: 2px solid var(--primary-blue);
             position: fixed;
             bottom: 0;
             width: 100%;
@@ -170,9 +145,7 @@
         .social-links {
             display: flex;
             justify-content: center;
-            gap: 1.5rem;
-            margin-top: 1rem;
-        }
+            gap: 1.5rem;        }
 
         .social-links a {
             color: var(--white);
@@ -194,7 +167,8 @@
         }
 
         .btn {
-            padding: 1.2rem 3rem;            text-decoration: none;
+            padding: 1.2rem 3rem;
+            text-decoration: none;
             border-radius: 50px;
             font-weight: bold;
             font-size: 1.1rem;
@@ -215,38 +189,39 @@
             box-shadow: 0 15px 40px rgba(192, 192, 192, 0.6);
         }
 
-        /* التجاوب مع الجوال */
         @media (max-width: 768px) {
             .banner {
                 flex-direction: column;
                 height: auto;
                 padding: 2rem 1rem;
-            }
+                min-height: 550px;            }
 
             .banner-content,
             .banner-canvas-container {
                 width: 100%;
                 padding-right: 0;
                 margin-bottom: 2rem;
+                text-align: center;
             }
 
-            .header {
-                justify-content: center; /* لتوسيط الشعار في الجوال */
+            #gltfCanvas {
+                min-height: 220px;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- الهيدر الثابت -->
+    <!-- الهيدر -->
     <header class="header">
         <img src="logo.png" alt="REIDO Logo" class="logo-img">
     </header>
 
-    <!-- البانر المتدرج -->    <div class="banner">
+    <!-- البانر -->
+    <div class="banner">
         <div class="banner-content">
             <h1>REIDO</h1>
-            <h2>Real Eidolon Software Company</h2>
+            <h2>REAL EIDOLON SOFTWARE COMPANY</h2>
             <p>We turn creative ideas into tangible digital reality.<br>Professional experience in design and development.</p>
             <a href="portfolio.php" class="btn">
                 <i class="fas fa-images"></i>
@@ -258,106 +233,96 @@
         </div>
     </div>
 
-    <!-- المحتوى الرئيسي (فارغ) -->
+    <!-- المحتوى الرئيسي -->
     <section class="main-content">
         <h2>Welcome to Our World of Innovation</h2>
-        <!-- محتوى إضافي يمكن إضافته لاحقًا -->
+        <p>This is the main content area. It has a dark gray background, so the text color is white.</p>
     </section>
 
-    <!-- معلومات سريعة -->
-    <section class="quick-info">
-        <div class="info-grid">
-            <div class="info-card">
-                <i class="fas fa-paint-brush"></i>
-                <h3>Creative Design</h3>
-                <p>Professional designs reflecting your visual identity with latest standards.</p>
-            </div>
-            <div class="info-card">
-                <i class="fas fa-code"></i>
-                <h3>Advanced Programming</h3>
-                <p>Innovative software solutions using cutting-edge technologies.</p>
-            </div>
-            <div class="info-card">
-                <i class="fas fa-rocket"></i>
-                <h3>High Performance</h3>
-                <p>Projects delivered on time and with the highest quality.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- الفوتر الثابت -->
+    <!-- الفوتر -->
     <footer class="footer">
         <p>&copy; 2024 REIDO - Real Eidolon Software Company. All rights reserved.</p>
         <div class="social-links">
-            <a href="#"><i class="fab fa-facebook-f"></i></a>
-            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-facebook-f"></i></a>            <a href="#"><i class="fab fa-twitter"></i></a>
             <a href="#"><i class="fab fa-instagram"></i></a>
-            <a href="#"><i class="fab fa-linkedin-in"></i></a>        </div>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
     </footer>
 
     <script>
-        // الكود لتحميل وعرض وتدوير الكائن ثلاثي الأبعاد
         document.addEventListener('DOMContentLoaded', function () {
             const canvas = document.getElementById('gltfCanvas');
             const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
             const scene = new THREE.Scene();
             const camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
 
-            // ضبط حجم الـ_renderer ونسبة العرض
-            function resizeRendererToDisplaySize() {
-                const displayWidth = canvas.clientWidth;
-                const displayHeight = canvas.clientHeight;
-
-                const needResize = canvas.width !== displayWidth || canvas.height !== displayHeight;
-                if (needResize) {
-                    renderer.setSize(displayWidth, displayHeight, false);
-                    camera.aspect = displayWidth / displayHeight;
-                    camera.updateProjectionMatrix();
-                }
-                return needResize;
-            }
-
             // تهيئة الكاميرا
-            camera.position.z = 5;
+            camera.position.z = 8; // زيادة قليلاً لاستيعاب الحجم الكبير
 
-            // إضافة إضاءة
-            const light = new THREE.AmbientLight(0xffffff, 1);
-            scene.add(light);
+            // إضاءة
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+            scene.add(ambientLight);
 
             const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-            directionalLight.position.set(1, 1, 1).normalize();
+            directionalLight.position.set(5, 5, 5).normalize();
             scene.add(directionalLight);
 
             let model;
 
-            // تحميل النموذج
             const loader = new THREE.GLTFLoader();
             loader.load(
-                'logo.glb', // اسم الملف الذي طلبت
+                'logo.glb',
                 function (gltf) {
                     model = gltf.scene;
+
+                    // ⚠️ التغيير الجوهري: ضاعف الحجم 7 مرات
+                    model.scale.set(7, 7, 7);
+
+                    // تمركز النموذج في المشهد
+                    const box = new THREE.Box3().setFromObject(model);
+                    const center = box.getCenter(new THREE.Vector3());
+                    model.position.sub(center);
+
                     scene.add(model);
                 },
                 undefined,
                 function (error) {
-                    console.error('An error happened during loading GLB:', error);
-                }            );
+                    console.error('Error loading GLB:', error);
+                    const ctx = canvas.getContext('2d');
+                    ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    ctx.fillStyle = 'white';
+                    ctx.font = '20px Arial';                    ctx.textAlign = 'center';
+                    ctx.fillText('3D Model Not Found', canvas.width / 2, canvas.height / 2);
+                }
+            );
 
-            // الدالة المسؤولة عن التدوير والرسم
+            // ضبط الحجم ديناميكيًا
+            function resizeRenderer() {
+                const w = canvas.clientWidth;
+                const h = canvas.clientHeight;
+                if (canvas.width !== w || canvas.height !== h) {
+                    renderer.setSize(w, h, false);
+                    camera.aspect = w / h;
+                    camera.updateProjectionMatrix();
+                }
+            }
+
             function animate() {
                 requestAnimationFrame(animate);
 
                 if (model) {
-                    model.rotation.y += 0.01; // تدوير المستمر حول المحور Y
+                    model.rotation.y += 0.008; // سرعة تدوير أبطأ قليلاً لتناسب الحجم الكبير
                 }
 
-                resizeRendererToDisplaySize(); // التحقق من تغيّر الحجم في كل إطار
+                resizeRenderer();
                 renderer.render(scene, camera);
             }
 
-            animate(); // بدء الحلقة
+            // استدعاء أولي لضبط الحجم
+            resizeRenderer();
+            animate();
         });
-
     </script>
 
 </body>
