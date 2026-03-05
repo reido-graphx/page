@@ -35,14 +35,14 @@
             color: var(--text-light);
             overflow-x: hidden;
             min-height: 100vh;
-            padding-top: 80px; /* مسافة للهيدر فقط */
-            padding-bottom: 120px;
+            padding-top: 60px;
+            padding-bottom: 80px;
         }
 
         /* الهيدر الثابت - فضي معدني */
         .header {
             background: linear-gradient(135deg, #e8e8e8 0%, #c0c0c0 50%, #a8a8a8 100%);
-            padding: 1rem 2rem;
+            padding: 0.5rem 1.5rem;
             position: fixed;
             width: 100%;
             top: 0;
@@ -50,40 +50,93 @@
             z-index: 1001;            border-bottom: 2px solid #808080;
             backdrop-filter: blur(10px);
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-between;
             align-items: center;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-            height: 80px;
+            height: 60px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
 
         .logo-img {
-            width: 60px;
-            height: 60px;
+            width: 45px;
+            height: 45px;
             border-radius: 5px;
             object-fit: contain;
             border: 2px solid #808080;
         }
 
-        /* البانر المتدرج - تم الإصلاح */
+        .site-name {
+            color: #000000;
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .btn-small {
+            padding: 0.5rem 1.2rem;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+
+        .btn-contact {            background: linear-gradient(135deg, var(--primary-blue), var(--bright-blue));
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 102, 204, 0.4);
+        }
+
+        .btn-contact:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 102, 204, 0.6);
+        }
+
+        .btn-support {
+            background: linear-gradient(135deg, var(--silver), var(--white));
+            color: var(--black);
+            box-shadow: 0 4px 15px rgba(192, 192, 192, 0.4);
+        }
+
+        .btn-support:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(192, 192, 192, 0.6);
+        }
+
+        /* البانر المتدرج */
         .banner {
             background: linear-gradient(135deg, var(--primary-blue), var(--bright-blue), var(--silver));
-            height: 400px; /* height محدد بدلاً من min-height */
+            height: 400px;
             width: 100%;
-            position: relative; /* مهم للـ canvas */
+            position: relative;
             top: 0;
             z-index: 999;
             display: flex;
             align-items: center;
-            justify-content: space-between; /* توزيع العناصر */
+            justify-content: space-between;
             padding: 2rem;
-            overflow: hidden; /* لمنع الخروج عن الحدود */
+            overflow: hidden;
         }
 
         .banner-content {
-            width: 45%; /* تقليل قليلاً */
+            width: 45%;
             padding-right: 2rem;
             color: var(--text-dark);
-            z-index: 10; /* فوق الخلفية */
+            z-index: 10;
         }
 
         .banner-content h1 {
@@ -92,11 +145,11 @@
             font-weight: 800;
             letter-spacing: -1px;
         }
-
         .banner-content h2 {
             font-size: 1.4rem;
             margin-bottom: 1rem;
-            letter-spacing: 2px;            font-weight: 500;
+            letter-spacing: 2px;
+            font-weight: 500;
         }
 
         .banner-content p {
@@ -106,8 +159,8 @@
         }
 
         .banner-canvas-container {
-            width: 50%; /* زيادة المساحة للكانفاس */
-            height: 350px; /* ارتفاع محدد */
+            width: 50%;
+            height: 350px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -135,34 +188,36 @@
         /* الفوتر الثابت - فضي معدني */
         .footer {
             background: linear-gradient(135deg, #b8b8b8 0%, #c0c0c0 50%, #d0d0d0 100%);
-            padding: 2rem;
+            padding: 1rem;
             text-align: center;
             border-top: 2px solid #808080;
             position: fixed;
             bottom: 0;
             left: 0;
-            width: 100%;
-            z-index: 1001;
+            width: 100%;            z-index: 1001;
             box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+            height: 80px;
         }
+
         .footer p {
             color: #1a1a1a;
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
             font-weight: 600;
+            font-size: 0.85rem;
         }
 
         .social-links {
             display: flex;
             justify-content: center;
-            gap: 1.5rem;
+            gap: 1rem;
         }
 
         .social-links a {
             color: #1a1a1a;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             transition: all 0.3s;
-            width: 45px;
-            height: 45px;
+            width: 35px;
+            height: 35px;
             border: 2px solid #1a1a1a;
             border-radius: 50%;
             display: flex;
@@ -174,8 +229,8 @@
         .social-links a:hover {
             background: var(--primary-blue);
             color: white;
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 102, 204, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 102, 204, 0.5);
         }
 
         .btn {
@@ -188,19 +243,38 @@
             display: inline-flex;
             align-items: center;
             gap: 0.8rem;
-            position: relative;
-            overflow: hidden;
+            position: relative;            overflow: hidden;
             border: 2px solid transparent;
             background: linear-gradient(135deg, var(--silver), var(--white));
             color: var(--black);
             box-shadow: 0 10px 30px rgba(192, 192, 192, 0.4);
         }
+
         .btn:hover {
             transform: translateY(-5px);
             box-shadow: 0 15px 40px rgba(192, 192, 192, 0.6);
         }
 
         @media (max-width: 768px) {
+            .header {
+                padding: 0.5rem 1rem;
+                height: 60px;
+            }
+
+            .site-name {
+                font-size: 1rem;
+            }
+
+            .btn-small {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.75rem;
+            }
+
+            .logo-img {
+                width: 40px;
+                height: 40px;
+            }
+
             .banner {
                 flex-direction: column;
                 height: auto;
@@ -218,12 +292,27 @@
 
             .banner-canvas-container {
                 height: 300px;
-                margin-top: 2rem;
-            }
+                margin-top: 2rem;            }
 
             body {
-                padding-top: 80px;
-                padding-bottom: 100px;
+                padding-top: 60px;
+                padding-bottom: 80px;
+            }
+
+            .footer {
+                height: auto;
+                min-height: 80px;
+                padding: 0.8rem;
+            }
+
+            .footer p {
+                font-size: 0.75rem;
+            }
+
+            .social-links a {
+                width: 30px;
+                height: 30px;
+                font-size: 1rem;
             }
         }
     </style>
@@ -232,18 +321,31 @@
 
     <!-- الهيدر -->
     <header class="header">
-        <img src="logo.png" alt="REIDO Logo" class="logo-img">
+        <div class="header-left">
+            <img src="logo.png" alt="REIDO Logo" class="logo-img">
+            <span class="site-name">Reido Graphx Group</span>
+        </div>
+        <div class="header-buttons">
+            <a href="#contact" class="btn-small btn-contact">
+                <i class="fas fa-envelope"></i>
+                تواصل معنا
+            </a>
+            <a href="#support" class="btn-small btn-support">
+                <i class="fas fa-heart"></i>
+                ادعمنا
+            </a>
+        </div>
     </header>
 
     <!-- البانر -->
     <div class="banner">
         <div class="banner-content">
             <h1>REIDO</h1>
-            <h2>REAL EIDOLON SOFTWARE COMPANY</h2>
-            <p>We turn creative ideas into tangible digital reality.<br>Professional experience in design and development.</p>
+            <h2>REAL EIDOLON SOFTWARE COMPANY</h2>            <p>We turn creative ideas into tangible digital reality.<br>Professional experience in design and development.</p>
             <a href="portfolio.php" class="btn">
                 <i class="fas fa-images"></i>
-                View Portfolio            </a>
+                View Portfolio
+            </a>
         </div>
         <div class="banner-canvas-container">
             <canvas id="gltfCanvas"></canvas>
@@ -284,20 +386,15 @@
             
             const scene = new THREE.Scene();
             
-            // حساب النسبة بشكل صحيح
             const width = container.clientWidth;
             const height = container.clientHeight;
             const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
 
-            // تهيئة الكاميرا
             camera.position.z = 8;
-
-            // ========== إضاءة قوية ومحسّنة ==========            
-            // 1. إضاءة محيطة قوية جداً
+            // إضاءة قوية ومحسّنة
             const ambientLight = new THREE.AmbientLight(0xffffff, 2.0);
             scene.add(ambientLight);
 
-            // 2. إضاءة اتجاهية رئيسية قوية
             const directionalLight = new THREE.DirectionalLight(0xffffff, 2.5);
             directionalLight.position.set(5, 5, 10);
             directionalLight.castShadow = true;
@@ -305,42 +402,36 @@
             directionalLight.shadow.mapSize.height = 1024;
             scene.add(directionalLight);
 
-            // 3. إضاءة اتجاهية ثانية من اليسار
             const directionalLight2 = new THREE.DirectionalLight(0xffffff, 1.8);
             directionalLight2.position.set(-5, 3, 8);
             scene.add(directionalLight2);
 
-            // 4. إضاءة اتجاهية ثالثة من الخلف للإبراز
             const directionalLight3 = new THREE.DirectionalLight(0x88ccff, 1.5);
             directionalLight3.position.set(0, -5, -10);
             scene.add(directionalLight3);
 
-            // 5. إضاءة نقطية علوية قوية
             const pointLight1 = new THREE.PointLight(0xffffff, 1.5, 50);
             pointLight1.position.set(0, 10, 0);
             scene.add(pointLight1);
 
-            // 6. إضاءة نقطية من اليمين
             const pointLight2 = new THREE.PointLight(0xffffff, 1.0, 50);
             pointLight2.position.set(10, 0, 5);
             scene.add(pointLight2);
 
-            // 7. إضاءة نقطية من اليسار
             const pointLight3 = new THREE.PointLight(0xffffff, 1.0, 50);
             pointLight3.position.set(-10, 0, 5);
             scene.add(pointLight3);
 
-            // 8. إضاءة خلفية قوية (Rim Light)
             const spotLight = new THREE.SpotLight(0xffffff, 2.0);
             spotLight.position.set(0, 10, -10);
             spotLight.angle = Math.PI / 6;
             spotLight.penumbra = 1;
             scene.add(spotLight);
 
-            // 9. إضاءة Hemisphere لمحاكاة السماء والأرض
             const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 1.5);
             hemiLight.position.set(0, 20, 0);
             scene.add(hemiLight);
+
             let model;
 
             const loader = new THREE.GLTFLoader();
@@ -348,14 +439,11 @@
                 'logo.glb',
                 function (gltf) {
                     model = gltf.scene;
-
-                    // تمكين الظلال للنموذج
                     model.traverse((child) => {
                         if (child.isMesh) {
                             child.castShadow = true;
                             child.receiveShadow = true;
                             
-                            // تحسين المواد
                             if (child.material) {
                                 child.material.needsUpdate = true;
                                 child.material.emissiveIntensity = 0.3;
@@ -363,10 +451,8 @@
                         }
                     });
 
-                    // ضاعف الحجم 7 مرات
                     model.scale.set(7, 7, 7);
 
-                    // تمركز النموذج في المشهد
                     const box = new THREE.Box3().setFromObject(model);
                     const center = box.getCenter(new THREE.Vector3());
                     model.position.sub(center);
@@ -386,11 +472,11 @@
                 }
             );
 
-            // ضبط الحجم ديناميكيًا
             function resizeRenderer() {
                 const w = container.clientWidth;
                 const h = container.clientHeight;
-                if (canvas.width !== w || canvas.height !== h) {                    renderer.setSize(w, h, false);
+                if (canvas.width !== w || canvas.height !== h) {
+                    renderer.setSize(w, h, false);
                     camera.aspect = w / h;
                     camera.updateProjectionMatrix();
                 }
@@ -402,12 +488,10 @@
                 if (model) {
                     model.rotation.y += 0.008;
                 }
-
                 resizeRenderer();
                 renderer.render(scene, camera);
             }
 
-            // استدعاء أولي لضبط الحجم
             resizeRenderer();
             animate();
         });
