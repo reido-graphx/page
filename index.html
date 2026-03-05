@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>REIDO - Real Eidolon Software Company</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/three@0.144.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.144.0/examples/js/loaders/GLTFLoader.js"></script>
     <style>
         * {
             margin: 0;
@@ -27,9 +29,11 @@
             color: var(--white);
             overflow-x: hidden;
             min-height: 100vh;
+            padding-top: 120px; /* ل accommodation الهيدر والبانر */
+            padding-bottom: 100px; /* ل accommodation الفوتر */
         }
 
-        /* الشعار والقائمة */
+        /* الهيدر الثابت */
         .header {
             background: rgba(0, 0, 0, 0.95);
             padding: 1rem 2rem;
@@ -39,219 +43,78 @@
             z-index: 1000;
             border-bottom: 2px solid var(--primary-blue);
             backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: flex-end; /* لوضع الشعار في الطرف الأيمن */
+            align-items: center;
+        }
+        .logo-img {
+            width: 60px; /* حسب الحجم المطلوب */
+            height: 60px;
+            border-radius: 5px;
+            object-fit: cover;
+            border: 2px solid var(--primary-blue);
         }
 
-        .header-content {
+        /* البانر المتدرج */
+        .banner {
+            background: linear-gradient(135deg, var(--primary-blue), var(--bright-blue), var(--silver));
+            height: 300px; /* ارتفاع البانر */
+            width: 100%;
+            position: fixed; /* مثبت تحت الهيدر */
+            top: 80px; /* ارتفاع الهيدر */
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .banner-content {
+            width: 50%;
+            padding-right: 2rem;
+        }
+
+        .banner-content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--black);
+        }
+
+        .banner-content p {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--dark-gray);
+        }
+
+        .banner-canvas-container {
+            width: 50%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #gltfCanvas {
+            width: 100%;
+            height: 100%;
+            display: block;        }
+
+        /* المحتوى الرئيسي (فارغ الآن) */
+        .main-content {
+            padding: 350px 2rem 3rem; /* 300px ارتفاع البانر + 50px */
             max-width: 1200px;
             margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .logo-icon {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, var(--primary-blue), var(--bright-blue));
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 1.5rem;
-            color: var(--white);
-        }
-
-        .logo-text h1 {
-            background: linear-gradient(135deg, var(--primary-blue), var(--silver), var(--bright-blue));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-size: 1.8rem;
-            font-weight: bold;
-        }
-
-        .logo-text p {
-            color: var(--silver);
-            font-size: 0.8rem;
-            letter-spacing: 1px;
-        }
-
-        /* القسم الرئيسي */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: var(--black);
-            position: relative;
-            padding: 2rem;
-            margin-top: 80px;
-        }
-
-        /* تأثيرات الخلفية */
-        .hero::before {            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 30% 50%, rgba(0, 102, 204, 0.15) 0%, transparent 50%),
-                        radial-gradient(circle at 70% 50%, rgba(192, 192, 192, 0.1) 0%, transparent 50%);
-            pointer-events: none;
-        }
-
-        .hero-content {
             text-align: center;
-            z-index: 1;
-            max-width: 900px;
         }
 
-        .hero-logo {
-            width: 200px;
-            height: 200px;
-            margin: 0 auto 2rem;
-            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--bright-blue) 30%, var(--silver) 60%, var(--white) 100%);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 6rem;
-            font-weight: bold;
-            color: var(--black);
-            box-shadow: 0 0 60px rgba(0, 102, 204, 0.5),
-                        0 0 100px rgba(0, 168, 255, 0.3);
-            animation: glow 3s ease-in-out infinite;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-logo::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transform: rotate(45deg);
-            animation: shine 3s ease-in-out infinite;
-        }
-
-        @keyframes glow {
-            0%, 100% { 
-                box-shadow: 0 0 60px rgba(0, 102, 204, 0.5),
-                            0 0 100px rgba(0, 168, 255, 0.3);            }
-            50% { 
-                box-shadow: 0 0 80px rgba(0, 102, 204, 0.7),
-                            0 0 120px rgba(0, 168, 255, 0.5);
-            }
-        }
-
-        @keyframes shine {
-            0%, 100% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-            50% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-        }
-
-        .hero h1 {
-            background: linear-gradient(135deg, var(--primary-blue), var(--silver), var(--bright-blue));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-size: 3.5rem;
-            margin-bottom: 0.5rem;
-            font-weight: bold;
-        }
-
-        .hero h2 {
+        .main-content h2 {
             color: var(--silver);
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            letter-spacing: 3px;
-        }
-
-        .hero p {
-            color: #999;
-            font-size: 1.2rem;
-            margin-bottom: 3rem;
-            line-height: 1.8;
-        }
-
-        /* الأزرار الرئيسية */
-        .main-buttons {
-            display: flex;
-            gap: 2rem;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 2rem;
-        }
-
-        .btn {
-            padding: 1.2rem 3rem;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: bold;            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.8rem;
-            position: relative;
-            overflow: hidden;
-            border: 2px solid transparent;
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.5s;
-        }
-
-        .btn:hover::before {
-            left: 100%;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary-blue), var(--bright-blue));
-            color: var(--white);
-            box-shadow: 0 10px 30px rgba(0, 102, 204, 0.4);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--white);
-            border: 2px solid var(--primary-blue);
-            box-shadow: 0 0 20px rgba(0, 102, 204, 0.3);
-        }
-
-        .btn-tertiary {
-            background: linear-gradient(135deg, var(--silver), var(--white));
-            color: var(--black);
-            box-shadow: 0 10px 30px rgba(192, 192, 192, 0.4);
-        }
-
-        .btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 102, 204, 0.6);
-        }
-
-        .btn-secondary:hover {            background: var(--primary-blue);
-            box-shadow: 0 15px 40px rgba(0, 102, 204, 0.6);
+            margin-bottom: 2rem;
         }
 
         /* قسم نبذة سريعة */
         .quick-info {
             background: var(--dark-gray);
             padding: 4rem 2rem;
-            margin-top: 4rem;
             border-top: 1px solid #333;
             border-bottom: 1px solid #333;
         }
@@ -282,17 +145,21 @@
             margin-bottom: 1rem;
             font-size: 1.3rem;
         }
-
         .info-card p {
             color: #777;
             line-height: 1.6;
         }
 
-        /* الفوتر */
+        /* الفوتر الثابت */
         .footer {
             background: var(--black);
             padding: 2rem;
-            text-align: center;            border-top: 2px solid var(--primary-blue);
+            text-align: center;
+            border-top: 2px solid var(--primary-blue;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            z-index: 1000;
         }
 
         .footer p {
@@ -326,79 +193,75 @@
             box-shadow: 0 10px 25px rgba(0, 102, 204, 0.5);
         }
 
+        .btn {
+            padding: 1.2rem 3rem;            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+            background: linear-gradient(135deg, var(--silver), var(--white));
+            color: var(--black);
+            box-shadow: 0 10px 30px rgba(192, 192, 192, 0.4);
+        }
+
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(192, 192, 192, 0.6);
+        }
+
         /* التجاوب مع الجوال */
         @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            .hero h2 {
-                font-size: 1.2rem;
-            }
-
-            .hero-logo {
-                width: 150px;
-                height: 150px;
-                font-size: 4rem;
-            }
-            .main-buttons {
+            .banner {
                 flex-direction: column;
-                align-items: center;
+                height: auto;
+                padding: 2rem 1rem;
             }
 
-            .btn {
+            .banner-content,
+            .banner-canvas-container {
                 width: 100%;
-                max-width: 300px;
-                justify-content: center;
+                padding-right: 0;
+                margin-bottom: 2rem;
             }
 
-            .logo-text h1 {
-                font-size: 1.3rem;
-            }
-
-            .logo-text p {
-                font-size: 0.6rem;
+            .header {
+                justify-content: center; /* لتوسيط الشعار في الجوال */
             }
         }
     </style>
 </head>
 <body>
-    <!-- الهيدر -->
+
+    <!-- الهيدر الثابت -->
     <header class="header">
-        <div class="header-content">
-            <div class="logo">
-                <div class="logo-icon">R</div>
-                <div class="logo-text">
-                    <h1>REIDO</h1>
-                    <p>REAL EIDOLON SOFTWARE COMPANY</p>
-                </div>
-            </div>
-        </div>
+        <img src="logo.png" alt="REIDO Logo" class="logo-img">
     </header>
 
-    <!-- القسم الرئيسي -->
-    <section class="hero">
-        <div class="hero-content">
-            <div class="hero-logo">R</div>
+    <!-- البانر المتدرج -->    <div class="banner">
+        <div class="banner-content">
             <h1>REIDO</h1>
-            <h2>REAL EIDOLON SOFTWARE COMPANY</h2>
-            <p>نحن نحول الأفكار الإبداعية إلى واقع رقمي ملموس<br>
-               خبرة احترافية في التصميم والبرمجة</p>
-
-            <div class="main-buttons">
-                <a href="portfolio.php" class="btn btn-primary">
-                    <i class="fas fa-images"></i>
-                    المعرض
-                </a>
-                <a href="contact.php" class="btn btn-secondary">                    <i class="fas fa-envelope"></i>
-                    التواصل معنا
-                </a>
-                <a href="team.php" class="btn btn-tertiary">
-                    <i class="fas fa-users"></i>
-                    أعضاء الفريق
-                </a>
-            </div>
+            <h2>Real Eidolon Software Company</h2>
+            <p>We turn creative ideas into tangible digital reality.<br>Professional experience in design and development.</p>
+            <a href="portfolio.php" class="btn">
+                <i class="fas fa-images"></i>
+                View Portfolio
+            </a>
         </div>
+        <div class="banner-canvas-container">
+            <canvas id="gltfCanvas"></canvas>
+        </div>
+    </div>
+
+    <!-- المحتوى الرئيسي (فارغ) -->
+    <section class="main-content">
+        <h2>Welcome to Our World of Innovation</h2>
+        <!-- محتوى إضافي يمكن إضافته لاحقًا -->
     </section>
 
     <!-- معلومات سريعة -->
@@ -406,31 +269,96 @@
         <div class="info-grid">
             <div class="info-card">
                 <i class="fas fa-paint-brush"></i>
-                <h3>تصميم إبداعي</h3>
-                <p>تصاميم احترافية تعكس هويتك البصرية بأحدث المعايير</p>
+                <h3>Creative Design</h3>
+                <p>Professional designs reflecting your visual identity with latest standards.</p>
             </div>
             <div class="info-card">
                 <i class="fas fa-code"></i>
-                <h3>برمجة متطورة</h3>
-                <p>حلول برمجية مبتكرة باستخدام أحدث التقنيات</p>
+                <h3>Advanced Programming</h3>
+                <p>Innovative software solutions using cutting-edge technologies.</p>
             </div>
             <div class="info-card">
                 <i class="fas fa-rocket"></i>
-                <h3>أداء عالي</h3>
-                <p>مشاريع تسلم في الوقت المحدد وبأعلى جودة</p>
+                <h3>High Performance</h3>
+                <p>Projects delivered on time and with the highest quality.</p>
             </div>
         </div>
     </section>
 
-    <!-- الفوتر -->
+    <!-- الفوتر الثابت -->
     <footer class="footer">
-        <p>&copy; 2024 REIDO - Real Eidolon Software Company. جميع الحقوق محفوظة</p>
+        <p>&copy; 2024 REIDO - Real Eidolon Software Company. All rights reserved.</p>
         <div class="social-links">
             <a href="#"><i class="fab fa-facebook-f"></i></a>
             <a href="#"><i class="fab fa-twitter"></i></a>
             <a href="#"><i class="fab fa-instagram"></i></a>
-            <a href="#"><i class="fab fa-linkedin-in"></i></a>
-        </div>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>        </div>
     </footer>
+
+    <script>
+        // الكود لتحميل وعرض وتدوير الكائن ثلاثي الأبعاد
+        document.addEventListener('DOMContentLoaded', function () {
+            const canvas = document.getElementById('gltfCanvas');
+            const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
+
+            // ضبط حجم الـ_renderer ونسبة العرض
+            function resizeRendererToDisplaySize() {
+                const displayWidth = canvas.clientWidth;
+                const displayHeight = canvas.clientHeight;
+
+                const needResize = canvas.width !== displayWidth || canvas.height !== displayHeight;
+                if (needResize) {
+                    renderer.setSize(displayWidth, displayHeight, false);
+                    camera.aspect = displayWidth / displayHeight;
+                    camera.updateProjectionMatrix();
+                }
+                return needResize;
+            }
+
+            // تهيئة الكاميرا
+            camera.position.z = 5;
+
+            // إضافة إضاءة
+            const light = new THREE.AmbientLight(0xffffff, 1);
+            scene.add(light);
+
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(1, 1, 1).normalize();
+            scene.add(directionalLight);
+
+            let model;
+
+            // تحميل النموذج
+            const loader = new THREE.GLTFLoader();
+            loader.load(
+                'logo.glb', // اسم الملف الذي طلبت
+                function (gltf) {
+                    model = gltf.scene;
+                    scene.add(model);
+                },
+                undefined,
+                function (error) {
+                    console.error('An error happened during loading GLB:', error);
+                }            );
+
+            // الدالة المسؤولة عن التدوير والرسم
+            function animate() {
+                requestAnimationFrame(animate);
+
+                if (model) {
+                    model.rotation.y += 0.01; // تدوير المستمر حول المحور Y
+                }
+
+                resizeRendererToDisplaySize(); // التحقق من تغيّر الحجم في كل إطار
+                renderer.render(scene, camera);
+            }
+
+            animate(); // بدء الحلقة
+        });
+
+    </script>
+
 </body>
-</html>
+    </html>
